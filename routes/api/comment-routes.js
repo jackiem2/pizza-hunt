@@ -11,9 +11,7 @@ const { addComment,
 router.route('/:pizzaId').post(addComment);
 
 // /api/comments/<pizzaId>/<commentId>
-router.route('/:pizzaId/:commentId')
-.put(addReply)
-.delete(removeComment);
+router.route('/:pizzaId/:commentId').put(addReply).delete(removeComment);
 
 router.route('/:pizzaId/:commentId/:replyId').delete(removeReply);
 
