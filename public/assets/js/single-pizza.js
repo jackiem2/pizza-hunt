@@ -98,19 +98,26 @@ function printReply(reply) {
 `;
 }
 
-function handleNewCommentSubmit(event) {
+function handleNewReplySubmit(event) {
   event.preventDefault();
 
-  const commentBody = $newCommentForm.querySelector('#comment').value;
-  const writtenBy = $newCommentForm.querySelector('#written-by').value;
-
-  if (!commentBody || !writtenBy) {
+  if (!event.target.matches('.reply-form')) {
     return false;
   }
 
-  const formData = { commentBody, writtenBy };
-  fetch(`/api/comments/${pizzaId}`, {
-    method: 'POST',
+  const commentId = event.target.getAttribute('data-commentid');
+
+  const writtenBy = event.target.querySelector('[name=reply-name]').value;
+  const replyBody = event.target.querySelector('[name=reply]').value;
+
+  if (!replyBody || !writtenBy) {
+    return false;
+  }
+
+  const formData = { writtenBy, replyBody };
+
+  fetch(`/api/comments/${pizzaId}/${commentId}`, {
+    method: 'PUT',
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json'
@@ -130,8 +137,11 @@ function handleNewCommentSubmit(event) {
     .catch(err => {
       console.log(err);
     });
-
 }
+
+$backBtn.addEventListener('click', function() {
+  window.history.back();
+});
 
 function handleNewReplySubmit(event) {
   event.preventDefault();
